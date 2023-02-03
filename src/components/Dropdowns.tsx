@@ -20,8 +20,6 @@ function Dropdowns() {
 
   //   function to calculate options for selected option in the dropdowns
   const calDropValues = (ind: number) => {
-    // disabling first option of changed select to restrict selection of default option
-    refDropdowns.current[ind].options[0].disabled=true;
     // splicing the refDropdowns.current to match with selected dropdown level
     refDropdowns.current.splice(ind + 1);
     // creating array of all the selected values in dropdowns array
@@ -81,7 +79,7 @@ function Dropdowns() {
                 calDropValues(i);
               }}
             >
-              <option value="---Select Category---">---Select Category---</option>
+              <option value="" selected hidden>---Select Category---</option>
               {ele.map((item) => (
                 <option key={item} value={item}>
                   {item}
