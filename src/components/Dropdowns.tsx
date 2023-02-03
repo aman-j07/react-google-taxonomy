@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Card, Form } from "react-bootstrap";
+import { Alert, Card, Form } from "react-bootstrap";
 import CardHeader from "react-bootstrap/esm/CardHeader";
 
 let tempdrop: { [key: string]: string } = {};
@@ -7,6 +7,7 @@ let tempDropArr = [];
 function Dropdowns() {
   const [dropdowns, setDropdowns] = useState<string[][]>([]);
   const refDropdowns = useRef<HTMLSelectElement[]>([]);
+  const [error,setError]=useState<string>('')
 
   //   useEffect to read data from text file and call extract fn
   useEffect(() => {
@@ -35,11 +36,12 @@ function Dropdowns() {
     // condition to check whether whether any objects exist on required key
     if (Object.keys(obj).length > 0) {
       tempDrop[tempArr.length] = Object.keys(obj);
-      setDropdowns([...tempDrop]);
+      setError('')
     } else {
       // alert statement for leaf object i.e. it contains 0 keys
-      alert("Leaf option reached");
+      setError('Leaf Object reached.')
     }
+    setDropdowns([...tempDrop]);
   };
 
   //   function to loop through the text array
@@ -47,7 +49,6 @@ function Dropdowns() {
     textArr.forEach((ele) => {
       // creating array of category names for each line of text file
       let splitted = ele.split(">").map((ele) => ele.trim());
-      //   calling fn to create nested objects for each element of array  containing category names
       createNestedObject(tempdrop, splitted);
     });
     tempDropArr.push(Object.keys(tempdrop));
@@ -79,7 +80,9 @@ function Dropdowns() {
                 calDropValues(i);
               }}
             >
-              <option value="" selected hidden>---Select Category---</option>
+              <option value="" selected hidden>
+                ---Select Category---
+              </option>
               {ele.map((item) => (
                 <option key={item} value={item}>
                   {item}
@@ -88,6 +91,7 @@ function Dropdowns() {
             </Form.Select>
           );
         })}
+        {error!=='' && <Alert variant="danger">{error}</Alert>}
       </Card.Body>
     </Card>
   );
