@@ -20,9 +20,11 @@ function Dropdowns() {
 
   //   function to calculate options for selected option in the dropdowns
   const calDropValues = (ind: number) => {
+    // disabling first option of changed select to restrict selection of default option
+    refDropdowns.current[ind].options[0].disabled=true;
     // splicing the refDropdowns.current to match with selected dropdown level
     refDropdowns.current.splice(ind + 1);
-     // creating array of all the selected values in dropdowns array
+    // creating array of all the selected values in dropdowns array
     let tempArr: string[] = refDropdowns.current.map((ele) => ele.value);
     let obj: any = tempdrop;
     // looping through array created above to reach the innermost object i.e. the last element of above created array
@@ -37,7 +39,7 @@ function Dropdowns() {
       tempDrop[tempArr.length] = Object.keys(obj);
       setDropdowns([...tempDrop]);
     } else {
-        // alert statement for leaf object i.e. it contains 0 keys
+      // alert statement for leaf object i.e. it contains 0 keys
       alert("Leaf option reached");
     }
   };
@@ -74,11 +76,12 @@ function Dropdowns() {
               className="my-3"
               size="lg"
               key={ele[0]}
-              ref={(ref: any) => (refDropdowns.current[i] = ref!)}
+              ref={(ref: any) => (refDropdowns.current[i] = ref)}
               onChange={() => {
                 calDropValues(i);
               }}
             >
+              <option value="---Select Category---">---Select Category---</option>
               {ele.map((item) => (
                 <option key={item} value={item}>
                   {item}
